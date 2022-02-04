@@ -2,10 +2,10 @@
 {
     public class IngredientInfo
     {
-        public int Id { get; private set; }
-        public IngredientName Name { get; private set; }
-        public Kcals KcalsPer100Grams { get; private set; }
-        public Money PricePer100Grams { get; private set; }
+        public int Id { get; }
+        public IngredientName Name { get; }
+        public Kcals KcalsPer100Grams { get; }
+        public Money PricePer100Grams { get; }
 
         public IngredientInfo(int id, IngredientName name)
         {

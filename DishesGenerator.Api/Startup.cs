@@ -2,7 +2,6 @@ using DishesGenerator.Infrastructure;
 using DishesGenerator.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +25,6 @@ namespace DishesGenerator.Api
             services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddWebUI();
-
 
             services.AddControllers(options =>
                 options.Filters.Add<ApiExceptionFilterAttribute>())

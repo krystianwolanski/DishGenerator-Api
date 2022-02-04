@@ -1,6 +1,5 @@
 ﻿using DishesGenerator.Domain.Entities;
 using DishesGenerator.Domain.Repositories;
-using DishesGenerator.Domain.ValueObjects;
 using DishesGenerator.Infrastructure.EF.Contexts;
 using DishesGenerator.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +10,6 @@ namespace DishesGenerator.Infrastructure.EF.Repositories
 {
     internal sealed class DishRepository : IDishRepository
     {
-   
-
         private readonly DbSet<DishWriteModel> _dishes;
         private readonly WriteDbContext _dbContext;
 
