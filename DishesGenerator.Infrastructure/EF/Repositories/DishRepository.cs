@@ -14,14 +14,12 @@ namespace DishesGenerator.Infrastructure.EF.Repositories
    
 
         private readonly DbSet<DishWriteModel> _dishes;
-        //private readonly DbSet<IngredientInfo> _ingredients;
         private readonly WriteDbContext _dbContext;
 
         public DishRepository(WriteDbContext dbContext)
         {
             _dishes = dbContext.Dishes;
             _dbContext = dbContext;
-            //  _ingredients = dbContext.IngredientsInfos;
         }
 
         public async Task AddAsync(Dish dish)
