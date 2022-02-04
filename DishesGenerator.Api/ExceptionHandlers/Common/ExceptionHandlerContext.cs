@@ -23,7 +23,7 @@ namespace DishesGenerator.Api.ExceptionHandlers.Common
                 return;
             }
 
-//            HandleUnknownException(context);
+            HandleUnknownException(context);
         }
 
         private bool HandleByHandlerIfExists(ExceptionContext context)
