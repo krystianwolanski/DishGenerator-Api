@@ -6,15 +6,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DishesGenerator.Api.Filters;
 using FluentValidation.AspNetCore;
-using DishesGenerator.Api;
 
-namespace DishesGenerator
+namespace DishesGenerator.Api
 {
     public class Startup
     {
