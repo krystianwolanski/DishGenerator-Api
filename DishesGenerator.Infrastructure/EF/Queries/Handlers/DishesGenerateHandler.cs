@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DishesGenerator.Application.DTO.Dish;
 using DishesGenerator.Application.DTO.Ingredient;
+using System;
 
 namespace DishesGenerator.Infrastructure.EF.Queries.Handlers
 {
@@ -21,26 +22,24 @@ namespace DishesGenerator.Infrastructure.EF.Queries.Handlers
             _dishes = readDbContext.Dishes;
         }
 
-        public Task<List<DishDto>> Handle(GenerateDishes request, CancellationToken cancellationToken)
+        public async Task<List<DishDto>> Handle(GenerateDishes request, CancellationToken cancellationToken)
         {
             var (maxKcalPerPortion, maxPricePerPortion, ingredientsNames) = request;
 
             var query = _dishes
-                .Include(d => d.Ingredients)
-                .ThenInclude(d => d.IngredientInfo)
                 .Where(d => d.Ingredients
-                    .Sum(x => x.GramsWeight / 100 * x.IngredientInfo.KcalsPer100Grams) / (float)d.Portions
-                        <= maxKcalPerPortion);
+                    .Sum(x => x.GramsWeight / 100 * x.IngredientInfo.PricePer100Grams) / d.Portions <= maxPricePerPortion);
+            
+            query = query
+                .Where(d => d.Ingredients
+                    .Sum(x => x.GramsWeight / 100 * x.IngredientInfo.KcalsPer100Grams) / d.Portions <= maxKcalPerPortion);
 
             if (ingredientsNames is not null)
             {
                 query = query.Where(d => d.Ingredients.Any(i => ingredientsNames.Contains(i.IngredientInfo.Name)));
             }
 
-            var result = query.AsEnumerable().Where(d => d.Ingredients
-                .Sum(x => x.Price) / d.Portions <= maxPricePerPortion);
-
-            return Task.FromResult(result.Select(d => new DishDto
+            return await query.Select(d => new DishDto
             {
                 Name = d.Name,
                 ShortDescription = d.ShortDescription,
@@ -48,12 +47,14 @@ namespace DishesGenerator.Infrastructure.EF.Queries.Handlers
                 Ingredients = d.Ingredients.Select(i => new IngredientDto
                 {
                     Name = i.IngredientInfo.Name,
-                    Kcals = i.Kcals,
                     Grams = i.GramsWeight,
-                    Price = i.Price.ToString()
+                    Kcals = i.GramsWeight / 100 * i.IngredientInfo.KcalsPer100Grams,
+                    Price = i.GramsWeight / 100 * i.IngredientInfo.PricePer100Grams
                 }),
-                KcalPerPortion = d.KcalsPerPortion
-            }).ToList());
+                KcalPerPortion = d.Ingredients.Sum(i => i.GramsWeight / 100 * i.IngredientInfo.KcalsPer100Grams) / d.Portions,
+                PricePerPortion = d.Ingredients.Sum(i => i.GramsWeight / 100 * i.IngredientInfo.PricePer100Grams) / d.Portions
+            }).ToListAsync();
+          
         }
     }
 }

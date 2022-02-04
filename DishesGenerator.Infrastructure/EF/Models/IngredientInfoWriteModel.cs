@@ -7,6 +7,6 @@ namespace DishesGenerator.Infrastructure.EF.Models
         public int Id { get; private set; }
         public string Name { get; init; }
         public float KcalsPer100Grams { get; init; }
-        public string PricePer100Grams { get; init; }
+        public Money PricePer100Grams { get; init; }
     }
 }

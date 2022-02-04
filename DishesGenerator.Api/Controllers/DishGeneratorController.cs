@@ -27,7 +27,7 @@ namespace DishesGenerator.Api.Controllers
 
             var generateDishesQuery = new GenerateDishes(
                 maxKcalPerPortion, 
-                new Money(Currency.From(maxMoney.Currency), maxMoney.Value),
+                new Money(maxMoney.Value),
                 ingredientsNames);
         
             var dishes = await Mediator.Send(generateDishesQuery);

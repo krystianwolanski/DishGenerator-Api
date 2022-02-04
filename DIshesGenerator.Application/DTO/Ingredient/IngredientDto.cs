@@ -5,6 +5,6 @@
         public string Name { get; set; }
         public float Grams { get; set; }
         public float Kcals { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
     }
 }

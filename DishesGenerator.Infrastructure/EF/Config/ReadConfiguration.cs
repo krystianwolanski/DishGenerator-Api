@@ -15,6 +15,7 @@ namespace DishesGenerator.Infrastructure.EF.Config
             builder.Property(d => d.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
         }
 
         public void Configure(EntityTypeBuilder<DishIngredientReadModel> builder)
@@ -38,7 +39,6 @@ namespace DishesGenerator.Infrastructure.EF.Config
                  .IsRequired();
 
             builder.Property(ii => ii.PricePer100Grams)
-                .HasConversion(p => p.ToString(), v => new Money(v))
                 .IsRequired();
 
             builder.ToTable("IngredientsInfos");

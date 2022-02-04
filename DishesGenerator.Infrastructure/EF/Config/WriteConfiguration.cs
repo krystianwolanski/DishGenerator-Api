@@ -30,6 +30,8 @@ namespace DishesGenerator.Infrastructure.EF.Config
         public void Configure(EntityTypeBuilder<IngredientInfoWriteModel> builder)
         {
             builder.ToTable("IngredientsInfos");
+            builder.Property(i => i.PricePer100Grams)
+                .HasConversion(i => i.Value, v => new Money(v));
         }
     }
 }

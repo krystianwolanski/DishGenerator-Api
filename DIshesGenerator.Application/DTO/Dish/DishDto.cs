@@ -9,6 +9,7 @@ namespace DishesGenerator.Application.DTO.Dish
         public string ShortDescription { get; set; }
         public uint Portions { get; set; }
         public float KcalPerPortion { get; set; }
+        public double PricePerPortion { get; set; }
         public IEnumerable<IngredientDto> Ingredients { get; set; }
     }
 }

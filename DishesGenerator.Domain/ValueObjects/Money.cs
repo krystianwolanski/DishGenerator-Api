@@ -5,39 +5,34 @@ namespace DishesGenerator.Domain.ValueObjects
 
     public record Money
     {
-        public Currency Currency { get; init; }
+        //public string Currency { get; init; }
         public double Value { get; init; }
 
-        public Money(Currency currency, double value)
+        public Money(double value)
         {
-            Currency = currency;
             Value = value;
         }
 
-        public Money(string value)
-        {
-            var splited = value.Split(" ");
-
-            Value = double.Parse(splited.First());
-            Currency = Currency.From(splited.Last());
-        }
-
+     
         private Money()
         {
 
         }
 
-        public static implicit operator double (Money value)
+        public static implicit operator double(Money value)
             => value.Value;
+
+        public static implicit operator Money(double value)
+            => new(value);
 
         public static Money operator *(GramsWeight grams, Money money)
         {
-            return new Money(money.Currency, grams.Value * money.Value);
+            return new Money(grams.Value * money.Value);
         }
 
         public override string ToString()
         {
-            return $"{Value} {Currency}";
+            return Value.ToString();
         }
     }
 }

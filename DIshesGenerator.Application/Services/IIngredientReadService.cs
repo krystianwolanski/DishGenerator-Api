@@ -6,6 +6,6 @@ namespace DishesGenerator.Application.Services
 {
     public interface IIngredientReadService
     {
-        int? GetIngredientIdByName(IngredientName name);
+        Task<int?> GetIngredientIdByName(IngredientName name);
     }
 }

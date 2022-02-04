@@ -28,10 +28,10 @@ namespace DishesGenerator.Application.Commands
         {
             var (name, shortDescription, portions, ingredients) = request;
 
-            var dishIngredients = ingredients
-                .Select(i =>
+            var dishIngredientsTasks = ingredients
+                .Select(async i =>
                 {
-                    var ingredientId = _ingredientReadService.GetIngredientIdByName(i.IngredientName);
+                    var ingredientId = await _ingredientReadService.GetIngredientIdByName(i.IngredientName);
 
                     if (ingredientId is null)
                         throw new IngredientNotFoundException(i.IngredientName);
@@ -39,7 +39,9 @@ namespace DishesGenerator.Application.Commands
                     return new DishIngredient(i.Grams,
                         new IngredientInfo(ingredientId.Value, i.IngredientName));
                 });
-                
+
+            var dishIngredients = await Task.WhenAll(dishIngredientsTasks);
+
             var dish = new Dish(name, shortDescription, portions, dishIngredients.ToList());
 
             await _dishRepository.AddAsync(dish);

@@ -3,25 +3,31 @@ using DishesGenerator.Domain.ValueObjects;
 using DishesGenerator.Infrastructure.EF.Contexts;
 using DishesGenerator.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DishesGenerator.Infrastructure.EF.Services
 {
     internal sealed class IngredientReadService : IIngredientReadService
     {
-        private readonly DbSet<IngredientInfoReadModel> _ingredients;
+        private readonly IServiceProvider _serviceProvider;
 
-        public IngredientReadService(ReadDbContext dbContext)
+        public IngredientReadService(IServiceProvider serviceProvider)
         {
-            _ingredients = dbContext.IngredientsInfos;
+            _serviceProvider = serviceProvider;
         }
 
-        public int? GetIngredientIdByName(IngredientName name)
+        public async Task<int?> GetIngredientIdByName(IngredientName name)
         {
-            var result = _ingredients
+
+            var _ingredients = ((ReadDbContext)_serviceProvider.GetRequiredService(typeof(ReadDbContext))).IngredientsInfos;
+                
+            var result = await _ingredients
                 .Where(i => i.Name == name)
                 .Select(i => i.Id)
-                .Single();
+                .SingleOrDefaultAsync();
 
             return result == 0 ? null : result;
         }

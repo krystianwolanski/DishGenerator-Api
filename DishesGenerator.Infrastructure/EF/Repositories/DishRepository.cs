@@ -21,7 +21,6 @@ namespace DishesGenerator.Infrastructure.EF.Repositories
 
         public async Task AddAsync(Dish dish)
         {
-
             var dishWriteModel = new DishWriteModel
             {
                 Name = dish.Name,

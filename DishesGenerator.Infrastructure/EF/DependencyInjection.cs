@@ -14,7 +14,7 @@ namespace DishesGenerator.Infrastructure.EF
         public static IServiceCollection AddSqlServer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDishRepository, DishRepository>();
-            services.AddTransient<IIngredientReadService, IngredientReadService>();
+            services.AddScoped<IIngredientReadService, IngredientReadService>();
 
             services.AddDbContext<ReadDbContext>
                 (options => options.UseSqlServer(configuration.GetConnectionString("DishGeneratorConnectionString")),ServiceLifetime.Transient);
